@@ -21,7 +21,9 @@ class DependencyProvider
      * Avoid external instantiation
      * DependencyProvider constructor.
      */
-    protected function __construct(){}
+    protected function __construct()
+    {
+    }
 
     /**
      * @return DependencyProvider
@@ -174,3 +176,4 @@ class DependencyProvider
         $this->groupTable->sqlConnection = $this->getSqlConnection();
         return $this->groupTable;
     }
+}

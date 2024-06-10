@@ -24,7 +24,7 @@ services:
       - "8080:80"
     environment:
       DB_NAME: wordpress
-      DB
+      DB_HOST: db
       DB_USER: wp-user
       DB_PASSWORD: wp-pass
       REDIS_HOST: redis
