@@ -1,0 +1,49 @@
+version: '3.7'
+services:
+  db:
+    image: mariadb
+    volumes:
+      - ba-data:/var/lib/mysql
+      - ./mounts/mysql-log:/var/log/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootPassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp-user
+      MYSQL_PASSWORD: wp-pass
+    ports:
+      - "8890:3306"
+    networks:
+      - ba-back
+  wordpress:
+    depends_on:
+      - db
+    build: ./build/wordpress
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      DB_NAME: wordpress
+      DB
+      DB_USER: wp-user
+      DB_PASSWORD: wp-pass
+      REDIS_HOST: redis
+      REDIS_PASSWORD: redis-password
+      WP_DEBUG: 1
+      WP_CACHE: 1
+      XDEBUG_CONFIG: remote_host=host.docker.internal
+      WP_HOME: localhost:8080
+      WP_SITEURL: localhost:8080
+    container_name: ba-wordpress-site
+    networks:
+      - ba-back
+    volumes:
+      - ./src/p2er-translations:/var/www/html/wp-content/plugins/p2er-translations
+      - ./src/p2er-example:/var/www/html/wp-content/plugins/p2er-example
+      - ./mounts/wp-config.php:/var/www/html/wp-config.php
+      - ./mounts/wordpress:/var/www/html:ro
+volumes:
+  ba-wordpress:
+  ba-data:
+networks:
+  ba-back:
